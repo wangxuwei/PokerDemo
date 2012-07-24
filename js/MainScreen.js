@@ -27,6 +27,10 @@
 		$e.on("click",".btnBetChips",function(){
 			betChips.call(c);
 		});
+		
+		$e.on("click",".btnSeatChange",function(){
+			changeSeat.call(c);
+		});
 	}
 	// --------- /Component Interface Implementation ---------- //
 	
@@ -81,6 +85,26 @@
 		var $chipArea = $e.find(".betChips .chipsArea").empty();
 		var chip = 500;
 		brite.display("PokerChip",{value:chip},{parent:$chipArea});
+	}
+	
+	function changeSeat(){
+		var c = this;
+		var $e = this.$element;
+		
+		$e.find(".seat").each(function(){
+			var $seat = $(this);
+			$seat.addClass("transitioning");
+			var $nextSeat;
+			if($seat.next().size() > 0){
+				$nextSeat = $seat.next();
+			}else{
+				$nextSeat = $e.find(".seat:first");
+			}
+			var left = Math.round($nextSeat.position().left / 10) * 10;
+			var top = Math.round($nextSeat.position().top / 10) * 10;
+			$seat.css("left",left+"px");
+			$seat.css("top",top+"px");
+		});
 	}
 	// --------- /Component Private API --------- //	
 	
