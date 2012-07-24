@@ -23,6 +23,10 @@
 		$e.on("click",".btnDealCard",function(){
 			dealCards.call(c);
 		});
+		
+		$e.on("click",".btnBetChips",function(){
+			betChips.call(c);
+		});
 	}
 	// --------- /Component Interface Implementation ---------- //
 	
@@ -51,7 +55,6 @@
 			brite.display("Card",{display:false,cardNo:obj.cardNo,cardSuite:obj.cardSuite},{parent:$player}).done(function(card){
 				var deltaX = $dealer.position().left - $player.position().left;
 				var deltaY = $dealer.position().top - $player.position().top;
-				console.log(deltaX,deltaY);
 				card.$element.css(brite.ua.cssPrefix()+"transform","translate("+deltaX+"px,"+deltaY+"px)");
 				card.$element.css("left",($player.find(".Card").size()*20)+"px");
 				setTimeout(function(){
@@ -69,6 +72,15 @@
 			});
 			return dfd.promise();
 		});
+	}
+	
+	function betChips(){
+		var c = this;
+		var $e = this.$element;
+		
+		var $chipArea = $e.find(".betChips .chipsArea").empty();
+		var chip = 500;
+		brite.display("PokerChip",{value:chip},{parent:$chipArea});
 	}
 	// --------- /Component Private API --------- //	
 	
