@@ -18,7 +18,6 @@
 		}
 		opts.cardNo = data.cardNo;
 		opts.cardSuite = data.cardSuite;
-		console.log(opts);
 		this.opts = opts;
 		var html = $("#tmpl-Card").render(opts);
 		return $(html);
@@ -27,13 +26,18 @@
 	Card.prototype.init = function(data,config){
 		var c = this;
 		var $e = this.$element;
+		if(data.display === false){
+			$e.hide();
+		}
 	}
 		
 	Card.prototype.postDisplay = function(data,config){
 		var c = this;
 		var $e = this.$element;
 		
-		
+		if(c.opts.show){
+			c.show();
+		}
 	}
 	// --------- /Component Interface Implementation ---------- //
 	
@@ -48,7 +52,6 @@
 		var c = this;
 		var $e = this.$element;
 		$e.find(".Card-fg-content img").attr("src", c.opts.path + "card_" + c.opts.cardSuite + "_" + c.opts.cardNo + c.opts.ext);
-
 		$e.addClass("show");
 	}
 	
