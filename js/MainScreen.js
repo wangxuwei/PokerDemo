@@ -31,6 +31,10 @@
 		$e.on("click",".btnSeatChange",function(){
 			changeSeat.call(c);
 		});
+		
+		$e.on("click",".btnShowTimer",function(){
+			showTimer.call(c);
+		});
 	}
 	// --------- /Component Interface Implementation ---------- //
 	
@@ -105,6 +109,13 @@
 			$seat.css("left",left+"px");
 			$seat.css("top",top+"px");
 		});
+	}
+	
+	function showTimer(){
+		var c = this;
+		var $e = this.$element;
+		
+		brite.display("Timer", {}, {parent:$e.find(".timerArea")}); 
 	}
 	// --------- /Component Private API --------- //	
 	
