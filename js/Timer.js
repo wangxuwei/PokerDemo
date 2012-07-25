@@ -2,6 +2,7 @@
 
 	function Timer(){};
 	var REFRESH_TIME = 20;
+	var RADIUS = 5;
   
 	// --------- Component Interface Implementation ---------- //
 	Timer.prototype.create = function(data,config){
@@ -105,43 +106,96 @@
 		var c = this;
 		var $e = this.$element;
 		
-		//get the length by ratio
-		var length = ((c.w - 2 * c.m) * 2 + (c.h - 2 * c.m) * 2) * ratio;
-		
 		var w = c.w;
-		var h = c.h
+		var h = c.h;
+		//padding
 		var m = c.m;
         var g = c.g;
+        //round radius
+        var r = RADIUS;
         g.clear();
+        // cirle length / 4, divide round rectangle to 9 segments 
+        var lc = Math.PI/2 * r;
+        var l1 = w/2 - m - r;
+        var l2 = lc;
+        var l3 = h - 2 * m - 2 * r;
+        var l4 = lc;
+        var l5 = 2*l1;
+        var l6 = lc;
+        var l7 = l3;
+        var l8 = lc;
+        var l9 = l1;
+        //get the length by ratio
+		var length = (l1 + l2 + l3 + l4 + l5 + l6 + l7 + l8 + l9) * ratio;
+		
         var thickness = 3;
         g.lineWidth(thickness);
         g.strokeStyle("rgb(27,224, 165)");
         
         g.moveTo(w/2,m);
-        if(length <= w/2 - m){
-        	g.lineTo(w/2 - length,m);
-        }else if(length > w/2 - m && length <= w/2 + h - 3 * m){
-        	g.lineTo(m,m);
-        	var lm = length - (w/2-m) + m;
-        	g.lineTo(m,lm);
-        }else if(length > w/2 + h - 3*m && length <= w/2 + h + w - 5*m){
-        	g.lineTo(m,m);
-        	g.lineTo(m,h-m);
-        	var lm = length - (h - 2 * m) - (w/2 - m) + m;
-        	g.lineTo(lm,h-m);
-        }else if(length > w/2 + h + w - 5*m && length <= w/2 + h + w + h - 7*m){
-        	g.lineTo(m,m);
-        	g.lineTo(m,h-m);
-        	g.lineTo(w-m,h-m);
-        	var lm = h - m - (length - (h - 2*m) - (w-2*m) - (w/2 - m));
-        	g.lineTo(w-m,lm);
-        }else{
-        	g.lineTo(m,m);
-        	g.lineTo(m,h-m);
-        	g.lineTo(w-m,h-m);
-        	g.lineTo(w-m,m);
-        	var lm = w - m - (length - (h - 2*m)*2 - (w-2*m) - (w/2 - m));
-        	g.lineTo(lm,m);
+        if(length <= l1){
+        	var lm = length;
+        	g.lineTo(l1 - lm + m + r,m);
+        }else if(length > l1 && length <= l1 + l2){
+        	g.lineTo(l1+m+r,m);
+        	var lm = length - l1;
+        	g.arc(m+r,m+r, r, 3*Math.PI/2,3*Math.PI/2 - lm/r,true);
+        }else if(length > l1 + l2 && length <= l1 + l2 + l3){
+        	g.lineTo(l1+m+r,m);
+        	g.arc(m+r,m+r, r, 3*Math.PI/2,Math.PI,true);
+        	var lm = length - l1 - l2;
+        	g.lineTo(m,lm+m+r);
+        }else if(length > l1 + l2 + l3 && length <= l1 + l2 + l3 + l4){
+        	g.lineTo(l1+m+r,m);
+        	g.arc(m+r,m+r, r, 3*Math.PI/2,Math.PI,true);
+        	g.lineTo(m,l3+m+r);
+        	var lm = length - l1 - l2 - l3;
+        	g.arc(m+r,h - m - r, r, Math.PI,Math.PI-lm/r,true);
+        }else if(length > l1 + l2 + l3 + l4 && length <= l1 + l2 + l3 + l4 + l5){
+        	g.lineTo(l1+m+r,m);
+        	g.arc(m+r,m+r, r, 3*Math.PI/2,Math.PI,true);
+        	g.lineTo(m,l3+m+r);
+        	g.arc(m+r,h - m - r, r, Math.PI,Math.PI/2,true);
+        	var lm = length - l1 - l2 - l3 - l4;
+        	g.lineTo(lm + r + m,h - m);
+        }else if(length > l1 + l2 + l3 + l4 + l5 && length <= l1 + l2 + l3 + l4 + l5 + l6){
+        	g.lineTo(l1+m+r,m);
+        	g.arc(m+r,m+r, r, 3*Math.PI/2,Math.PI,true);
+        	g.lineTo(m,l3+m+r);
+        	g.arc(m+r,h - m - r, r, Math.PI,Math.PI/2,true);
+        	g.lineTo(l5 + r + m,h - m);
+        	var lm = length - l1 - l2 - l3 - l4 - l5;
+        	g.arc(w - m - r,h - m - r, r, Math.PI/2 ,Math.PI/2-lm/r,true);
+        }else if(length > l1 + l2 + l3 + l4 + l5 + l6 && length <= l1 + l2 + l3 + l4 + l5 + l6 + l7){
+        	g.lineTo(l1+m+r,m);
+        	g.arc(m+r,m+r, r, 3*Math.PI/2,Math.PI,true);
+        	g.lineTo(m,l3+m+r);
+        	g.arc(m+r,h - m - r, r, Math.PI,Math.PI/2,true);
+        	g.lineTo(l5 + r + m,h - m);
+        	g.arc(w - m - r,h - m - r, r, Math.PI/2 ,0,true);
+        	var lm = length - l1 - l2 - l3 - l4 - l5 - l6;
+        	g.lineTo(w - m,l7 - lm + m + r);
+        }else if(length > l1 + l2 + l3 + l4 + l5 + l6 + l7 && length <= l1 + l2 + l3 + l4 + l5 + l6 + l7 + l8){
+        	g.lineTo(l1+m+r,m);
+        	g.arc(m+r,m+r, r, 3*Math.PI/2,Math.PI,true);
+        	g.lineTo(m,l3+m+r);
+        	g.arc(m+r,h - m - r, r, Math.PI,Math.PI/2,true);
+        	g.lineTo(l5 + r + m,h - m);
+        	g.arc(w - m - r,h - m - r, r, Math.PI/2 ,0,true);
+        	g.lineTo(w - m,l7 + m + r);
+        	var lm = length - l1 - l2 - l3 - l4 - l5 - l6 - l7;
+        	g.arc(w - m - r,m + r, r, Math.PI*2 ,Math.PI * 2 - lm/r,true);
+        }else if(length > l1 + l2 + l3 + l4 + l5 + l6 + l7 + l8 && length <= l1 + l2 + l3 + l4 + l5 + l6 + l7 + l8 + l9){
+        	g.lineTo(l1+m+r,m);
+        	g.arc(m+r,m+r, r, 3*Math.PI/2,Math.PI,true);
+        	g.lineTo(m,l3+m+r);
+        	g.arc(m+r,h - m - r, r, Math.PI,Math.PI/2,true);
+        	g.lineTo(l5 + r + m,h - m);
+        	g.arc(w - m - r,h - m - r, r, Math.PI/2 ,0,true);
+        	g.lineTo(w - m,l7 + m + r);
+        	g.arc(w - m - r,m + r, r, Math.PI*2 ,Math.PI  * 3/2,true);
+        	var lm = length - l1 - l2 - l3 - l4 - l5 - l6 - l7 - l8;
+        	g.lineTo(l9 - lm + l1 + m + r,m);
         }
         g.stroke();
         
