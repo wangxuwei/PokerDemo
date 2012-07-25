@@ -63,11 +63,13 @@
 			brite.display("Card",{display:false,cardNo:obj.cardNo,cardSuite:obj.cardSuite},{parent:$player}).done(function(card){
 				var deltaX = $dealer.position().left - $player.position().left;
 				var deltaY = $dealer.position().top - $player.position().top;
+				//set origin position
 				card.$element.css(brite.ua.cssPrefix()+"transform","translate("+deltaX+"px,"+deltaY+"px)");
 				card.$element.css("left",($player.find(".Card").size()*20)+"px");
 				setTimeout(function(){
 					card.$element.show();
 					card.$element.addClass("transitioning");
+					//set target position
 					card.$element.css(brite.ua.cssPrefix()+"transform","");
 					card.$element.one("webkitTransitionEnd",function(){
 						card.$element.removeClass("transitioning");
@@ -88,6 +90,7 @@
 		
 		var $chipArea = $e.find(".betChips .chipsArea").empty();
 		var chip = 500;
+		//show poker chip
 		brite.display("PokerChip",{value:chip},{parent:$chipArea});
 	}
 	
@@ -99,6 +102,7 @@
 			var $seat = $(this);
 			$seat.addClass("transitioning");
 			var $nextSeat;
+			//get next seat, if not exist , use first seat instead
 			if($seat.next().size() > 0){
 				$nextSeat = $seat.next();
 			}else{
